@@ -1,0 +1,30 @@
+# 8th Grade Assessment Dashboard: Power BI + SQL + Python
+
+**Status:** Production (in use by 8th grade team) | **Impact:** 45 min/day time savings | **Accuracy:** ±1 point prediction
+
+---
+
+## Problem Statement (Situation)
+Manual Excel analysis of 30+ student assessment records (Blue/White tests, Benchmark, 7th STAAR) required 2 hours/planning period. Special populations (30-40% of students with 504/SPED/Dyslexia/EL/At-Risk codes) made tracking accommodations and growth trends nearly impossible for teachers.
+
+## Technical Challenge (Task)
+Build a real-time, filterable dashboard that:
+- Handles multiple assessment types with inconsistent naming
+- Supports class-level AND individual student views
+- Predicts future STAAR performance without overfitting
+- Runs on existing school infrastructure (Excel exports + district laptops)
+
+## My Solution (Action - Technical)
+
+### 1. Data Pipeline (SQL + Power Query)
+```sql
+-- Sample: Standardized assessment names across six weeks
+SELECT 
+    student_id,
+    CASE 
+        WHEN test_name LIKE '%White%' THEN 'End-of-Six Weeks'
+        WHEN test_name LIKE '%Blue%' THEN 'Mid-Six Weeks'
+    END as test_type,
+    score
+FROM raw_assessments
+WHERE score IS NOT NULL
